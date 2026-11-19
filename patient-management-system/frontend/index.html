@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>CareBoard · Patient Management</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="CareBoard home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M13.5 5h5v8.5H27v5h-8.5V27h-5v-8.5H5v-5h8.5z" fill="currentColor"/></svg>
+        </span>
+        <span class="brand-copy"><strong>CareBoard</strong><small>Patient workspace</small></span>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+      <button class="nav-item active" type="button" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">▦</span><span>Overview</span>
+      </button>
+      <button class="nav-item" id="navPatients" type="button">
+        <span class="nav-icon" aria-hidden="true">♙</span><span>Patients</span><span class="nav-count" id="navPatientCount">—</span>
+      </button>
+
+      <div class="sidebar-bottom">
+        <div class="privacy-card">
+          <span class="privacy-icon" aria-hidden="true">✦</span>
+          <strong>Keep records tidy</strong>
+          <p>Search, update, and manage patient details from one place.</p>
+        </div>
+        <div class="profile-row">
+          <div class="avatar avatar-purple">CB</div>
+          <div class="profile-copy"><strong>Care team</strong><small>Local workspace</small></div>
+          <span class="profile-dots" aria-hidden="true">···</span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="top">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-divider">/</span><strong>Overview</strong></div>
+        <div class="topbar-right">
+          <span class="api-status" id="apiStatus"><span class="status-dot"></span><span id="apiStatusText">Connecting to API</span></span>
+          <div class="top-avatar" aria-label="CareBoard">CB</div>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">PATIENT CARE <span class="eyebrow-line"></span></p>
+          <h1>Patient overview<span class="heading-period">.</span></h1>
+          <p class="page-subtitle">A clear view of your patient records and key details.</p>
+        </div>
+        <button class="primary-button" id="addPatientButton" type="button">
+          <span class="button-plus" aria-hidden="true">+</span> Add patient
+        </button>
+      </section>
+
+      <section class="stats-grid" aria-label="Patient summary">
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Total patients</span><span class="stat-icon icon-blue" aria-hidden="true">♙</span></div>
+          <div class="stat-value" id="totalPatients">—</div>
+          <div class="stat-foot"><span class="stat-dot blue-dot"></span>Records in your workspace</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Normal BMI</span><span class="stat-icon icon-green" aria-hidden="true">✓</span></div>
+          <div class="stat-value" id="normalPatients">—</div>
+          <div class="stat-foot"><span class="stat-dot green-dot"></span>BMI between 18.5 and 24.9</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Underweight</span><span class="stat-icon icon-amber" aria-hidden="true">↘</span></div>
+          <div class="stat-value" id="underweightPatients">—</div>
+          <div class="stat-foot"><span class="stat-dot amber-dot"></span>BMI below 18.5</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Overweight / obese</span><span class="stat-icon icon-rose" aria-hidden="true">↗</span></div>
+          <div class="stat-value" id="highBmiPatients">—</div>
+          <div class="stat-foot"><span class="stat-dot rose-dot"></span>BMI of 25 or above</div>
+        </article>
+      </section>
+
+      <section class="records-panel" id="patientsPanel">
+        <div class="panel-heading">
+          <div>
+            <h2>Patient records</h2>
+            <p>Browse and manage the people in your care.</p>
+          </div>
+          <button class="secondary-button" id="refreshButton" type="button"><span class="refresh-icon" aria-hidden="true">↻</span> Refresh</button>
+        </div>
+
+        <div class="toolbar">
+          <label class="search-box" for="searchInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+            <input id="searchInput" type="search" placeholder="Search by name, ID, or city…" autocomplete="off">
+            <kbd>⌘ K</kbd>
+          </label>
+          <div class="toolbar-right">
+            <label class="filter-select"><span class="sr-only">Filter by BMI status</span>
+              <select id="bmiFilter"><option value="all">All BMI statuses</option><option value="Underweight">Underweight</option><option value="Normal">Normal</option><option value="Overweight">Overweight</option><option value="Obese">Obese</option></select>
+            </label>
+            <label class="filter-select"><span class="sr-only">Sort patients</span>
+              <select id="sortSelect"><option value="name-asc">Name A–Z</option><option value="name-desc">Name Z–A</option><option value="bmi-asc">BMI: Low to high</option><option value="bmi-desc">BMI: High to low</option><option value="age-asc">Age: Youngest first</option><option value="age-desc">Age: Oldest first</option></select>
+            </label>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="patients-table">
+            <thead><tr><th>Patient</th><th>Age / Gender</th><th>City</th><th>Height</th><th>Weight</th><th>BMI</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead>
+            <tbody id="patientsTableBody">
+              <tr><td class="loading-cell" colspan="8"><span class="spinner"></span>Loading patient records…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-footer"><span id="recordsCount">Loading records…</span><span class="table-note"><span class="live-dot"></span> Synced with local API</span></div>
+      </section>
+
+      <footer class="page-footer"><span>CareBoard <span class="footer-separator">·</span> Patient management workspace</span><span>Demo project <span class="footer-separator">·</span> Not for clinical decision-making</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="patientModalBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="patientModalTitle">
+      <div class="modal-header"><div><p class="eyebrow">PATIENT DETAILS</p><h2 id="patientModalTitle">Add a patient</h2><p class="modal-subtitle" id="patientModalSubtitle">Fill in the information below to create a record.</p></div><button class="icon-button" id="closePatientModal" type="button" aria-label="Close dialog">×</button></div>
+      <form id="patientForm">
+        <div class="form-grid">
+          <label class="form-field" id="patientIdField"><span>Patient ID <em>*</em></span><input id="patientId" name="id" required maxlength="24" placeholder="e.g. P006" pattern="[A-Za-z0-9_-]+"><small>A unique ID, such as P006.</small></label>
+          <label class="form-field"><span>Full name <em>*</em></span><input id="patientName" name="name" required maxlength="100" placeholder="Enter full name"></label>
+          <label class="form-field"><span>City <em>*</em></span><input id="patientCity" name="city" required maxlength="80" placeholder="Enter city"></label>
+          <label class="form-field"><span>Age <em>*</em></span><input id="patientAge" name="age" type="number" required min="1" max="119" step="1" placeholder="Age in years"></label>
+          <label class="form-field"><span>Gender <em>*</em></span><select id="patientGender" name="gender" required><option value="">Select gender</option><option value="female">Female</option><option value="male">Male</option><option value="others">Others</option></select></label>
+          <label class="form-field"><span>Height (metres) <em>*</em></span><input id="patientHeight" name="height" type="number" required min="0.1" max="2.8" step="0.01" placeholder="e.g. 1.68"></label>
+          <label class="form-field"><span>Weight (kg) <em>*</em></span><input id="patientWeight" name="weight" type="number" required min="1" max="500" step="0.1" placeholder="e.g. 67.5"></label>
+        </div>
+        <div class="modal-info"><span aria-hidden="true">ⓘ</span> BMI and BMI status are calculated automatically by the backend.</div>
+        <div class="form-error" id="formError" role="alert" hidden></div>
+        <div class="modal-actions"><button class="secondary-button" id="cancelPatientModal" type="button">Cancel</button><button class="primary-button" id="savePatientButton" type="submit">Save patient</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="detailsModalBackdrop" hidden>
+    <section class="modal detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailsTitle">
+      <div class="modal-header"><div><p class="eyebrow">PATIENT PROFILE</p><h2 id="detailsTitle">Patient details</h2><p class="modal-subtitle" id="detailsSubtitle"></p></div><button class="icon-button" id="closeDetailsModal" type="button" aria-label="Close dialog">×</button></div>
+      <div id="patientDetailsContent"></div>
+      <div class="modal-actions"><button class="secondary-button" id="closeDetailsButton" type="button">Close</button><button class="primary-button" id="editFromDetailsButton" type="button">Edit patient</button></div>
+    </section>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
