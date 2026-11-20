@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/" aria-label="StudentHub home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9.5 12 4l9 5.5-9 5.5L3 9.5Z"/><path d="M6.5 12v4.2c3.1 2.7 7.9 2.7 11 0V12M21 10v6"/></svg></span>
+        <span class="brand-copy"><strong>StudentHub</strong><small>MANAGEMENT PORTAL</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="#dashboard" id="nav-dashboard"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></span>Dashboard</a>
+        <a class="nav-link" href="#students" id="nav-students"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M16 20v-1.7a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20M9 10.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM16 3.1a4 4 0 0 1 0 7.8M22 20v-1.7a4 4 0 0 0-3-3.9"/></svg></span>Students <span class="nav-count" id="nav-count">0</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1.2 1.1-1.9 1.5-1.9 3M12 17.3h.01"/></svg></div>
+          <strong>Need a hand?</strong>
+          <p>Manage records with the tools in your workspace.</p>
+          <a href="/docs" target="_blank" rel="noreferrer">View API documentation <span>↗</span></a>
+        </div>
+        <div class="profile-row"><div class="profile-avatar">SA</div><div class="profile-info"><strong>Student Admin</strong><small>Administrator</small></div><span class="profile-dots">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="system-status"><span class="status-dot"></span>System online</span>
+          <button class="icon-button" id="refresh-button" title="Refresh student records" aria-label="Refresh student records"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.5 9A7 7 0 0 1 17 5l3 2M4 17l3 2a7 7 0 0 0 11.5-4"/></svg></button>
+          <div class="top-avatar">SA</div>
+        </div>
+      </header>
+
+      <section class="page-section" id="dashboard">
+        <div class="welcome-row">
+          <div><div class="eyebrow"><span class="eyebrow-line"></span>STUDENT OVERVIEW</div><h1>Good to see you<span class="heading-period">.</span></h1><p class="subtitle">Here's what's happening with your students today.</p></div>
+          <button class="btn btn-primary" id="add-student-top"><span class="plus-icon">＋</span> Add new student</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span class="stat-label">Total students</span><span class="stat-icon icon-violet"><svg viewBox="0 0 24 24"><path d="M16 20v-1.7a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20M9 10.5a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM16 3.1a4 4 0 0 1 0 7.8M22 20v-1.7a4 4 0 0 0-3-3.9"/></svg></span></div><div class="stat-value" id="total-students">—</div><div class="stat-foot"><span class="stat-foot-dot violet-dot"></span>All registered students</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-label">Placed students</span><span class="stat-icon icon-green"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg></span></div><div class="stat-value" id="placed-students">—</div><div class="stat-foot"><span class="stat-foot-dot green-dot"></span><span id="placed-rate">0%</span> placement rate</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-label">Not yet placed</span><span class="stat-icon icon-amber"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="stat-value" id="unplaced-students">—</div><div class="stat-foot"><span class="stat-foot-dot amber-dot"></span>Awaiting placement</div></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-label">Average marks</span><span class="stat-icon icon-blue"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 3 3 6-7"/><path d="M16 6h4v4"/></svg></span></div><div class="stat-value" id="average-marks">—<small>/ 100</small></div><div class="stat-foot"><span class="stat-foot-dot blue-dot"></span>Across all students</div></article>
+        </div>
+
+        <section class="content-card" id="students">
+          <div class="card-header"><div><div class="card-title-line"><h2>Student records</h2><span class="record-count" id="record-count">0 records</span></div><p class="card-description">View, search and manage your student information.</p></div><button class="btn btn-outline" id="export-button"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M5 17v3h14v-3"/></svg> Export CSV</button></div>
+          <div class="table-toolbar"><label class="search-box"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input type="search" id="search-input" placeholder="Search by name, roll no. or address..." autocomplete="off"><kbd>⌘ K</kbd></label><div class="toolbar-controls"><label class="filter-label" for="placement-filter">Placement</label><select class="filter-select" id="placement-filter"><option value="all">All students</option><option value="placed">Placed</option><option value="unplaced">Not placed</option></select><button class="icon-button filter-reset" id="clear-filters" title="Clear search and filters" aria-label="Clear search and filters"><svg viewBox="0 0 24 24"><path d="M4 7h16M7 7V4h10v3m-9 0 1 13h6l1-13M10 10v6m4-6v6"/></svg></button></div></div>
+          <div class="table-wrap"><table><thead><tr><th class="roll-column">ROLL NO.</th><th>STUDENT</th><th>MARKS</th><th>ADDRESS</th><th>PLACEMENT STATUS</th><th class="actions-column">ACTIONS</th></tr></thead><tbody id="student-table-body"><tr><td colspan="6"><div class="table-message"><span class="spinner"></span>Loading student records...</div></td></tr></tbody></table></div>
+          <div class="table-footer"><span id="table-summary">Loading records...</span><button class="text-button" id="back-to-top">Back to top ↑</button></div>
+        </section>
+        <footer class="footer"><span>© <span id="year"></span> StudentHub</span><span>Built for simpler student administration <span class="footer-heart">♥</span></span></footer>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="student-modal" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-heading"><div><div class="modal-kicker">STUDENT DETAILS</div><h2 id="modal-title">Add a new student</h2><p id="modal-description">Enter the student's information below.</p></div><button class="modal-close" id="close-modal" aria-label="Close form">×</button></div>
+      <form id="student-form">
+        <div class="form-grid">
+          <div class="form-field"><label for="roll">Roll number <span class="required-mark">*</span></label><input id="roll" name="roll" type="number" min="1" step="1" placeholder="e.g. 1024" required><small class="field-hint" id="roll-hint">Must be unique for each student.</small></div>
+          <div class="form-field"><label for="name">Full name <span class="required-mark">*</span></label><input id="name" name="name" type="text" maxlength="100" placeholder="Enter student's full name" required></div>
+          <div class="form-field"><label for="marks">Marks <span class="required-mark">*</span></label><div class="input-suffix"><input id="marks" name="marks" type="number" min="0" max="100" step="0.01" placeholder="0 – 100" required><span>/ 100</span></div><small class="field-hint">Enter marks between 0 and 100.</small></div>
+          <div class="form-field"><label for="placed">Placement status <span class="required-mark">*</span></label><select id="placed" name="placed" required><option value="false">Not placed</option><option value="true">Placed</option></select></div>
+          <div class="form-field full-field"><label for="address">Address / City <span class="required-mark">*</span></label><input id="address" name="address" type="text" maxlength="200" placeholder="Enter city or address" required></div>
+        </div>
+        <div class="form-error" id="form-error" role="alert" hidden></div>
+        <div class="modal-actions"><button type="button" class="btn btn-outline" id="cancel-modal">Cancel</button><button type="submit" class="btn btn-primary" id="submit-student"><span class="submit-label">Save student</span><span class="button-spinner" hidden></span></button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="confirm-backdrop" id="confirm-modal" aria-hidden="true"><section class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title"><div class="confirm-icon"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-9 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></div><h3 id="confirm-title">Delete student?</h3><p id="confirm-message">This action cannot be undone.</p><div class="confirm-actions"><button class="btn btn-outline" id="cancel-delete">Cancel</button><button class="btn btn-danger" id="confirm-delete">Delete student</button></div></section></div>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
